@@ -1,0 +1,8 @@
+{
+  "twitter" : {
+    "api_key" : "YOUR TWITTER API KEY",
+    "api_secret_key" : "YOUR TWITTER API SECRET KEY",
+    "access_token" : "YOUR TWITTER ACCESS TOKEN",
+    "access_token_secret" : "YOUR TWITTER SECRET ACCESS TOKEN"
+  }
+}

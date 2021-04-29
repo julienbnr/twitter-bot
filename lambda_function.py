@@ -2,7 +2,7 @@ import json
 
 from queries import search, display
 from client import twitter_client
-from mail import send_email
+from mail import send_email, get_message_body
 
 # lambda entry point function
 def lambda_handler(event, context):
@@ -22,5 +22,6 @@ def lambda_handler(event, context):
             print("No tweet found.")
         else:
             print(str(len(user_tweets)) + " Users tweet found.")
-            body = display(user_tweets)
-            send_email("Potential YieldFarming x100", body, topic_arn)
+            body = get_message_body(user_tweets)
+        send_email("Potential YieldFarming x100", body, topic_arn)
+        return 0

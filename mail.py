@@ -1,5 +1,7 @@
 import boto3
 
+from user_tweet import get_concat_keyword
+
 # send an email to sns subscribers
 def send_email(subject, message, topic_arn):
     print('sending email to subscribers...')
@@ -20,9 +22,3 @@ def get_message_body(user_tweets):
         body = body + "Keywords of last 10 tweets = " + get_concat_keyword(user_tweet.keywords) + "\n"
         body = body + "\n"
     return body
-
-def get_concat_keyword(keywords):
-    concat_keyword = ""
-    for keyword in keywords:
-        concat_keyword = concat_keyword + keyword + " / "
-    return concat_keyword

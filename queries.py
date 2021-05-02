@@ -24,18 +24,21 @@ def filter_tweets(tweets, screen_name_must_contain):
 def get_user_last_tweet(api, user_name, config_keywords):
     user_tweets = api.user_timeline(screen_name=user_name, count=10, include_rts = False, tweet_mode = 'extended')
     last_tweet = 'N/A'
+    url = 'N/A'
 
     counter = 0
     tweet_keywords = []
     for tweet in user_tweets:
         if counter == 0:
             last_tweet = tweet.full_text
+            if tweet.user.url:
+                url = tweet.user.url
         current_tweet = tweet.full_text.lower()
         for keyword in config_keywords:
             if keyword in current_tweet and keyword not in tweet_keywords:
                 tweet_keywords.append(keyword)
         counter = counter + 1
-    return UserTweet(user_name, last_tweet, tweet_keywords)
+    return UserTweet(user_name, last_tweet, tweet_keywords, url)
 
 # get user name list
 def get_user_names(tweets):
@@ -54,6 +57,7 @@ def display(user_tweets):
             concat_keyword = concat_keyword + keyword + " / "
         print("User = " + user_tweet.user_name)
         print("Profile link = https://twitter.com/" + user_tweet.user_name)
+        print("URL = " + user_tweet.url)
         print("Last Tweet = " + user_tweet.last_tweet)
         print("Keywords of last 10 tweets = " + concat_keyword)
         print("\n")

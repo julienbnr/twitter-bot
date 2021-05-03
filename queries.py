@@ -45,7 +45,7 @@ def search(api, search_config):
     print(str(len(tweets)) + " result(s) found !")
 
     # apply filter on username
-    print("Applying filter on username. Username must include one of these [" + str_list_to_join_string(tweet_keywords) + "]")
+    print("Applying filter on username. Username must include one of these [" + str_list_to_join_string(user_name_keywords) + "]")
     user_names = get_filtered_usernames_by_tweet_list(tweets, user_name_keywords)
     print(str(len(user_names)) + " user(s) account(s) with one of these keywords in username found")
 

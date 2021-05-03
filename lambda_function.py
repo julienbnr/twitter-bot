@@ -19,9 +19,9 @@ def lambda_handler(event, context):
         user_tweet_email = []
 
         for tweet in potential_user_tweets:
-            exist = has_item(tweet.user_name)
+            exist = has_item(config, tweet.user_name)
             if exist == False:
-                add_item(tweet) # put new item
+                add_item(config, tweet) # put new item
                 user_tweet_email.append(tweet)
 
         if 0 == len(user_tweet_email):

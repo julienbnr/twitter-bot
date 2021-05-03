@@ -3,12 +3,11 @@ import boto3
 from user_tweet import get_concat_keyword
 from datetime import datetime
 
-DB_TABLE = 'twitter_accounts_bot'
-
 # add an item in the table
-def add_item(user_tweet):
+def add_item(config, user_tweet):
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(DB_TABLE)
+    table_name = config['dynamo']['table_name']
+    table = dynamodb.Table(table_name)
     keywords = get_concat_keyword(user_tweet.keywords)
     table.put_item(
         Item = {
@@ -21,10 +20,11 @@ def add_item(user_tweet):
     )
 
 # check if db contains item
-def has_item(username):
+def has_item(config, username):
     client = boto3.client('dynamodb')
+    table_name = config['dynamo']['table_name']
     response = client.query(
-        TableName=DB_TABLE,
+        TableName=table_name,
         KeyConditionExpression='Username = :username',
         ExpressionAttributeValues={
             ':username': {'S': username }

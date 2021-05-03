@@ -1,5 +1,4 @@
 {
-{
   "twitter" : {
     "api_key" : "YOUR TWITTER API KEY",
     "api_secret_key" : "YOUR TWITTER API SECRET KEY",
@@ -10,3 +9,4 @@
     "topic_arn" : "YOUR SNS TOPIC ARN"
   }
 }
+

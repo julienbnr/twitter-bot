@@ -1,6 +1,5 @@
 import boto3
 
-from botocore.exceptions import ClientError
 from user_tweet import get_concat_keyword
 from datetime import datetime
 
@@ -16,15 +15,14 @@ def add_item(user_tweet):
             'Username' : user_tweet.user_name,
             'LastTweet' : user_tweet.last_tweet,
             'Keywords' : keywords,
-            'Date' : str(datetime.now())
+            'Date' : str(datetime.now()),
+            'WebsiteUrl' : user_tweet.url
         }
     )
 
 # check if db contains item
 def has_item(username):
     client = boto3.client('dynamodb')
-    DB = boto3.resource('dynamodb')
-    table = DB.Table(DB_TABLE)
     response = client.query(
         TableName=DB_TABLE,
         KeyConditionExpression='Username = :username',

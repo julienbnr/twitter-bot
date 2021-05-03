@@ -1,7 +1,6 @@
 import tweepy
 import json
 
-from client import twitter_client
 from user_tweet import UserTweet
 
 def input_contains_elem_in_list(input, list):
@@ -11,36 +10,45 @@ def input_contains_elem_in_list(input, list):
             return True
     return False
 
-# filter tweets by user name contain
+# filter tweets by user name contain
 def filter_tweets(tweets, screen_name_must_contain):
     filtered_tweets = []
     for tweet in tweets:
         user_name = tweet.user.screen_name
-        if (input_contains_elem_in_list(user_name, screen_name_must_contain)):
+        if input_contains_elem_in_list(user_name, screen_name_must_contain):
             filtered_tweets.append(tweet)
     return filtered_tweets
 
-# get user tweets
-def get_user_last_tweet(api, user_name, config_keywords):
-    user_tweets = api.user_timeline(screen_name=user_name, count=10, include_rts = False, tweet_mode = 'extended')
-    last_tweet = 'N/A'
+# retrieve the last nb tweets of specified user
+def get_user_timelines(api, user_name, max_retrieve_nb_tweet):
+    return api.user_timeline(
+        screen_name=user_name,
+        count=max_retrieve_nb_tweet,
+        include_rts = False,
+        tweet_mode = 'extended'
+    )
+
+def is_user_eligible_for_retrieving(timelines):
+    return len(timelines) < 24
+
+def get_user_tweet_from_user_timelines(timelines, screen_name, config_keywords):
     url = 'N/A'
-
-    counter = 0
+    last_tweet = 'N/A'
     tweet_keywords = []
-    for tweet in user_tweets:
-        if counter == 0:
-            last_tweet = tweet.full_text
-            if tweet.user.url:
-                url = tweet.user.url
-        current_tweet = tweet.full_text.lower()
-        for keyword in config_keywords:
-            if keyword in current_tweet and keyword not in tweet_keywords:
-                tweet_keywords.append(keyword)
-        counter = counter + 1
-    return UserTweet(user_name, last_tweet, tweet_keywords, url)
 
-# get user name list
+    if len(timelines) > 0:
+        tweet = timelines[0]
+        last_tweet = tweet.full_text
+        if tweet.user.url:
+            url = tweet.user.url
+        for tweet_timeline in timelines:
+            current_tweet = tweet_timeline.full_text.lower()
+            for keyword in config_keywords:
+                if keyword in current_tweet and keyword not in tweet_keywords:
+                    tweet_keywords.append(keyword)
+    return UserTweet(screen_name, last_tweet, tweet_keywords, url)
+
+# get user name list
 def get_user_names(tweets):
     user_names = []
     for tweet in tweets:
@@ -76,6 +84,8 @@ def search(api):
 
         user_tweets = []
         for user_name in user_names:
-            user_tweet = get_user_last_tweet(api, user_name, tweet_keywords)
-            user_tweets.append(user_tweet)
+            timelines = get_user_timelines(api, user_name, 25)
+            if is_user_eligible_for_retrieving(timelines):
+                user_tweet = get_user_tweet_from_user_timelines(timelines, user_name, tweet_keywords)
+                user_tweets.append(user_tweet)
         return user_tweets

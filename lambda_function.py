@@ -1,34 +1,45 @@
-import json
-
-from queries import search, display
 from client import twitter_client
-from mail import send_email, get_message_body
+from config import get_twitter_credentials, get_aws_config, get_search_config
 from db import has_item, add_item
-from user_tweet import UserTweet, display_all
+from mail import send_email
+from queries import search
+from util import get_string_user_accounts
 
 # lambda entry point function
 def lambda_handler(event, context):
-    with open('json/config.json') as config_json:
-        config = json.load(config_json)
-        api = twitter_client(config)
-        potential_user_tweets = search(api)
 
-        print("Finding " + str(len(potential_user_tweets)) + " potential tweets...")
-        display_all(potential_user_tweets)
+    # import config
+    config = get_aws_config()
+    search_config = get_search_config()
+    twitter_credentials = get_twitter_credentials()
 
-        user_tweet_email = []
+    # get the twitter client api
+    api = twitter_client(twitter_credentials)
 
-        for tweet in potential_user_tweets:
-            exist = has_item(config, tweet.user_name)
-            if exist == False:
-                add_item(config, tweet) # put new item
-                user_tweet_email.append(tweet)
+    # perform queries for searching tweets...
+    user_accounts = search(api, search_config)
 
-        if 0 == len(user_tweet_email):
-            print("No new user tweet found.")
-        else:
-            print(str(len(user_tweet_email)) + " new users tweet found.")
-            body = get_message_body(user_tweet_email)
-            send_email("Potential YieldFarming x100", body, topic_arn)
-        return 0
+    # getting not saved users accounts
+    new_user_accounts = get_unregistered_user_accounts(config, user_accounts)
 
+    if 0 == len(new_user_accounts):
+        print("No unregistered user account.")
+    else:
+        print(str(len(new_user_accounts)) + " new user(s) account(s) found.")
+        body = get_string_user_accounts(new_user_accounts)
+        send_email("Potential YieldFarming x100", body, config["sns"]["topic_arn"])
+    return 0
+
+# get unregistered user account
+def get_unregistered_user_accounts(config, user_accounts):
+    print("finding the not registered user(s) account(s) from result...")
+    not_registered_user_accounts = []
+    for user_account in user_accounts:
+        username = user_account.user_name
+        is_account_registered = has_item(config, username)
+        if not is_account_registered:
+            print(username + " is not registered")
+            add_item(config, user_account)
+            not_registered_user_accounts.append(user_account)
+    print(str(len(not_registered_user_accounts)) + " not registered user(s) account(s) found...")
+    return not_registered_user_accounts

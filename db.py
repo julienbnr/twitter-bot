@@ -1,19 +1,17 @@
 import boto3
 
-from user_tweet import get_concat_keyword
 from datetime import datetime
+from util import str_list_to_join_string
 
 # add an item in the table
 def add_item(config, user_tweet):
     dynamodb = boto3.resource('dynamodb')
-    table_name = config['dynamo']['table_name']
-    table = dynamodb.Table(table_name)
-    keywords = get_concat_keyword(user_tweet.keywords)
+    table = dynamodb.Table(config['dynamo']['table_name'])
     table.put_item(
         Item = {
             'Username' : user_tweet.user_name,
             'LastTweet' : user_tweet.last_tweet,
-            'Keywords' : keywords,
+            'Keywords' : str_list_to_join_string(user_tweet.keywords),
             'Date' : str(datetime.now()),
             'WebsiteUrl' : user_tweet.url
         }
@@ -22,9 +20,8 @@ def add_item(config, user_tweet):
 # check if db contains item
 def has_item(config, username):
     client = boto3.client('dynamodb')
-    table_name = config['dynamo']['table_name']
     response = client.query(
-        TableName=table_name,
+        TableName=config['dynamo']['table_name'],
         KeyConditionExpression='Username = :username',
         ExpressionAttributeValues={
             ':username': {'S': username }

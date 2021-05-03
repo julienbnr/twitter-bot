@@ -1,5 +1,10 @@
 {
-  "query": "#YieldFarming",
+  "search" : {
+    "query": "#YieldFarming",
+    "order" : "recent",
+    "count" : 100,
+    "max_user_tweet_timeline" : 25
+  },
   "user_name_keywords" : [
     "finance",
     "defi",

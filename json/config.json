@@ -4,5 +4,6 @@
   },
   "dynamo" : {
     "table_name" : "YOUR_DYNAMO_DB_TABLE_NAME"
-  }
+  },
+  "webhooks_urls" : []
 }

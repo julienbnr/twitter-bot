@@ -4,6 +4,7 @@ from db import has_item, add_item
 from mail import send_email
 from queries import search
 from util import get_string_user_accounts
+from webhook import send_webhooks
 
 # lambda entry point function
 def lambda_handler(event, context):
@@ -28,6 +29,7 @@ def lambda_handler(event, context):
         print(str(len(new_user_accounts)) + " new user(s) account(s) found.")
         body = get_string_user_accounts(new_user_accounts)
         send_email("Potential YieldFarming x100", body, config["sns"]["topic_arn"])
+        send_webhooks(config, user_accounts)
     return 0
 
 # get unregistered user account

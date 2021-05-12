@@ -18,24 +18,27 @@ def str_list_to_join_string(list):
 # get string users account message
 def get_string_user_accounts(user_accounts):
   message = ""
-
   for user_account in user_accounts:
-    username = user_account.user_name
-    message = message + "User: " + username + "\n"
-    message = message + "Twitter Profile Link: " + TWITTER_BASE_URL + username + "\n"
+    message = message + get_string_user_account(user_account)
+  return message
 
-    # adding website url if not empty
-    website = user_account.url
-    if "" != website:
-      message = message + "Website: " + website + "\n"
+def get_string_user_account(user_account):
+  message = ''
+  username = user_account.user_name
+  message = message + "User: " + username + "\n"
+  message = message + "Twitter Profile Link: " + TWITTER_BASE_URL + username + "\n"
 
-    # adding keywords of tweets if not empty
-    if len(user_account.keywords) > 0:
-      message = message + "Keywords: " + str_list_to_join_string(user_account.keywords) + "\n"
+  # adding website url if not empty
+  website = user_account.url
+  if "" != website:
+    message = message + "Website: " + website + "\n"
 
-    message = message + "Last Tweet \n" + user_account.last_tweet + "\n"
-    message = message + "\n"
+  # adding keywords of tweets if not empty
+  if len(user_account.keywords) > 0:
+    message = message + "Keywords: " + str_list_to_join_string(user_account.keywords) + "\n"
 
+  message = message + "Last Tweet \n" + user_account.last_tweet + "\n"
+  message = message + "\n"
   return message
 
 # get the usernames from tweet list without duplicate

@@ -1,24 +1,30 @@
 from client import twitter_client
-from config import get_twitter_credentials, get_search_config
+from config import get_twitter_credentials, get_search_config, get_aws_config
 from queries import search
-from util import get_string_user_accounts
+from webhook import send_webhooks
 
-# import config
-print("Get the twitter credentials from config file...")
-search_config = get_search_config()
-twitter_credentials = get_twitter_credentials()
+def launch():
+    config = get_aws_config()
 
-# get the twitter client api
-print("Get the twitter client with credentials from config...")
-api = twitter_client(twitter_credentials)
+    # import config
+    print("Get the twitter credentials from config file...")
+    search_config = get_search_config()
+    twitter_credentials = get_twitter_credentials()
 
-# perform search
-print("Perform search query on Twitter...")
-user_accounts = search(api, search_config)
+    # get the twitter client api
+    print("Get the twitter client with credentials from config...")
+    api = twitter_client(twitter_credentials)
 
-# printing results
-if 0 == len(user_accounts):
-    print("No user account found.")
-else:
-    print(str(len(user_accounts)) + " user(s) account(s) found.")
-    print(get_string_user_accounts(user_accounts))
+    # perform search
+    print("Perform search query on Twitter...")
+    user_accounts = search(api, search_config)
+
+    # printing results
+    if 0 == len(user_accounts):
+        print("No user account found.")
+    else:
+        print(str(len(user_accounts)) + " user(s) account(s) found.")
+        print(get_string_user_accounts(user_accounts))
+        send_webhooks(config, user_accounts)
+
+launch()

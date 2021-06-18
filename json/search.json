@@ -1,21 +1,26 @@
 {
   "search" : {
-    "query": "#YieldFarming",
+    "queries" : [
+      "coming soon",
+      "farm",
+      "swap",
+      "at block",
+      "countdown",
+      "liquidity",
+      "0xPolygon",
+      "polygon",
+      "yield farming"
+    ],
     "order" : "recent",
-    "count" : 100,
-    "max_user_tweet_timeline" : 25
+    "count" : 30,
+    "max_user_tweet_timeline" : 7
   },
   "user_name_keywords" : [
     "finance",
     "defi",
     "swap",
-    "bsc",
     "farm",
-    "token",
-    "poly",
-    "sol",
-    "whale",
-    "matic"
+    "poly"
   ],
   "tweet_keywords" : [
     "countdown",

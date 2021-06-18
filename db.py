@@ -13,7 +13,8 @@ def add_item(config, user_tweet):
             'LastTweet' : user_tweet.last_tweet,
             'Keywords' : str_list_to_join_string(user_tweet.keywords),
             'Date' : str(datetime.now()),
-            'WebsiteUrl' : user_tweet.url
+            'WebsiteUrl' : user_tweet.url,
+            'NbTweet' : user_tweet.nb_tweet
         }
     )
 

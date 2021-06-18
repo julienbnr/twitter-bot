@@ -1,7 +1,6 @@
 from client import twitter_client
 from config import get_twitter_credentials, get_aws_config, get_search_config
 from db import has_item, add_item
-from mail import send_email
 from queries import search
 from util import get_string_user_accounts
 from webhook import send_webhooks
@@ -28,7 +27,6 @@ def lambda_handler(event, context):
     else:
         print(str(len(new_user_accounts)) + " new user(s) account(s) found.")
         body = get_string_user_accounts(new_user_accounts)
-        send_email("Potential YieldFarming x100", body, config["sns"]["topic_arn"])
         send_webhooks(config, user_accounts)
     return 0
 

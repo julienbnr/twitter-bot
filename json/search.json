@@ -1,27 +1,33 @@
 {
   "search" : {
-    "query": "#YieldFarming",
+    "queries" : [
+      "doxxed",
+      "no presale",
+      "pancakeswap",
+      "reward",
+      "deflationary",
+      "buy back",
+      "gem"
+    ],
     "order" : "recent",
-    "count" : 100,
-    "max_user_tweet_timeline" : 25
+    "count" : 30,
+    "max_user_tweet_timeline" : 10
   },
   "user_name_keywords" : [
-    "finance",
-    "defi",
-    "swap",
     "bsc",
-    "farm",
-    "token",
+    "matic",
     "poly",
-    "sol",
-    "whale",
-    "matic"
+    "baby",
+    "doge",
+    "ku",
+    "kcc",
+    "inu",
+    "moon"
   ],
   "tweet_keywords" : [
     "countdown",
-    "farming",
     "launched",
-    "start",
+    "live",
     "solana",
     "matic",
     "poly",

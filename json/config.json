@@ -1,9 +1,8 @@
 {
-  "sns": {
-    "topic_arn": "YOUR_SNS_TOPIC_ARN"
-  },
   "dynamo" : {
-    "table_name" : "YOUR_DYNAMO_DB_TABLE_NAME"
+    "table_name" : "ultron_v1_twitter_accounts_bot"
   },
-  "webhooks_urls" : []
+  "webhooks_urls" : [
+    "https://discord.com/api/webhooks/855546793231646762/x4D8knFLKFH8xm7jNWi0YZO6M-j3NQZrjxV4TA_m9siaThkcXCei1TxzbrgYueWVxUFs"
+  ]
 }

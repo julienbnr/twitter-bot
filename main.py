@@ -2,6 +2,7 @@ from client import twitter_client
 from config import get_twitter_credentials, get_search_config, get_aws_config
 from queries import search
 from webhook import send_webhooks
+from util import get_string_user_accounts
 
 def launch():
     config = get_aws_config()
@@ -25,6 +26,6 @@ def launch():
     else:
         print(str(len(user_accounts)) + " user(s) account(s) found.")
         print(get_string_user_accounts(user_accounts))
-        send_webhooks(config, user_accounts)
+        #send_webhooks(config, user_accounts)
 
 launch()
